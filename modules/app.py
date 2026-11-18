@@ -42,7 +42,13 @@ def get_system_metrics():
     memory = psutil.virtual_memory().percent
 
     system_drive = os.environ.get("SystemDrive", "C:") + "\\"
-    disk = psutil.disk_usage(system_drive).percent
+    disk_path = (
+    os.environ.get("SystemDrive", "C:") + "\\"
+    if os.name == "nt"
+    else "/"
+)
+
+disk = psutil.disk_usage(disk_path).percent
 
     return cpu, memory, disk
 
